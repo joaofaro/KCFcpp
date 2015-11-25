@@ -48,7 +48,6 @@ fixed_window - Keep the window size fixed when in single-scale mode (multi-scale
 show - Show the results in a window.
 
 To include it in your project, without the VOT toolkit you just need to:
-@code
 	// Create the KCFTracker object with one of the available options
 	KCFTracker tracker(HOG, FIXEDWINDOW, MULTISCALE, LAB);
 
@@ -57,7 +56,6 @@ To include it in your project, without the VOT toolkit you just need to:
 
 	// Get the position of the object for the new frame
 	result = tracker.update(frame);
-@endcode
 
 
 
