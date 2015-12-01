@@ -479,7 +479,7 @@ cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scal
 }
     
 // Initialize Hanning window. Function called only in the first frame.
-bool KCFTracker::createHanningMats()
+void KCFTracker::createHanningMats()
 {   
     cv::Mat hann1t = cv::Mat(cv::Size(size_patch[1],1), CV_32F, cv::Scalar(0));
     cv::Mat hann2t = cv::Mat(cv::Size(1,size_patch[0]), CV_32F, cv::Scalar(0)); 

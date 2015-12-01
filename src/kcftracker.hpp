@@ -128,7 +128,7 @@ protected:
     cv::Mat getFeatures(const cv::Mat & image, bool inithann, float scale_adjust = 1.0f);
 
     // Initialize Hanning window. Function called only in the first frame.
-    bool createHanningMats();
+    void createHanningMats();
 
     // Calculate sub-pixel peak for one dimension
     float subPixelPeak(float left, float center, float right);
