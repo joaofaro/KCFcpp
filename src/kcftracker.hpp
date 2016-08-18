@@ -92,13 +92,13 @@ class KCFTracker : public Tracker
 {
 public:
     // Constructor
-    KCFTracker(bool hog = true, bool fixed_window = true, bool multiscale = true, bool lab = true);
+    KCFTracker(const bool& hog = true, const bool& fixed_window = true, const bool& multiscale = true, const bool& lab = true);
 
     // Initialize tracker 
-    virtual void init(const cv::Rect &roi, cv::Mat image);
+    virtual void init(const cv::Rect &roi, const cv::Mat& image);
     
     // Update position based on the new frame
-    virtual cv::Rect update(cv::Mat image);
+    virtual cv::Rect update(const cv::Mat& image);
 
     float interp_factor; // linear interpolation factor for adaptation
     float sigma; // gaussian kernel bandwidth
@@ -112,26 +112,41 @@ public:
     float scale_weight;  // to downweight detection scores of other scales for added stability
 
 protected:
+    // Set default parameters
+    void setParameters();
+
     // Detect object in the current frame.
-    cv::Point2f detect(cv::Mat z, cv::Mat x, float &peak_value);
+    cv::Point2f detect(const cv::Mat& z, const cv::Mat& x, float &peak_value);
 
     // train tracker with a single image
-    void train(cv::Mat x, float train_interp_factor);
+    void train(const cv::Mat& x, const float& train_interp_factor);
 
     // Evaluates a Gaussian kernel with bandwidth SIGMA for all relative shifts between input images X and Y, which must both be MxN. They must    also be periodic (ie., pre-processed with a cosine window).
-    cv::Mat gaussianCorrelation(cv::Mat x1, cv::Mat x2);
+    cv::Mat gaussianCorrelation(const cv::Mat& x1, const cv::Mat& x2);
 
     // Create Gaussian Peak. Function called only in the first frame.
-    cv::Mat createGaussianPeak(int sizey, int sizex);
+    cv::Mat createGaussianPeak(const size_t& sizey, const size_t& sizex);
 
     // Obtain sub-window from image, with replication-padding and extract features
-    cv::Mat getFeatures(const cv::Mat & image, bool inithann, float scale_adjust = 1.0f);
+    cv::Mat getFeatures(const cv::Mat& image, const bool& inithann, const float& scale_adjust = 1.0f);
+
+    // Get hog features
+    void getHogFeatures(const cv::Mat& z, cv::Mat& featureMap);
+
+    // Get lab features
+    void getLabFeatures(const cv::Mat& z, cv::Mat& featureMap);
+
+    // Get gray features
+    void getGrayFeatures(const cv::Mat& z, cv::Mat& featureMap);
+
+    // Set initial template size, only runs in the first frame
+    void setInitialTemplateSize();
 
     // Initialize Hanning window. Function called only in the first frame.
     void createHanningMats();
 
     // Calculate sub-pixel peak for one dimension
-    float subPixelPeak(float left, float center, float right);
+    float subPixelPeak(const float& left, const float& center, const float& right);
 
     cv::Mat _alphaf;
     cv::Mat _prob;
@@ -141,11 +156,13 @@ protected:
     cv::Mat _labCentroids;
 
 private:
-    int size_patch[3];
-    cv::Mat hann;
+    int _size_patch[3];
+    cv::Mat _hann;
     cv::Size _tmpl_sz;
     float _scale;
     int _gaussian_size;
     bool _hogfeatures;
     bool _labfeatures;
+    bool _multiscale;
+    bool _fixed_window;
 };
