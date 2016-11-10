@@ -52,12 +52,12 @@ int main(int argc, char* argv[]){
 	// Path to list.txt
 	ifstream listFile;
 	string fileName = "images.txt";
-  	listFile.open(fileName);
+  	listFile.open(fileName.c_str());
 
   	// Read groundtruth for the 1st frame
   	ifstream groundtruthFile;
 	string groundtruth = "region.txt";
-  	groundtruthFile.open(groundtruth);
+  	groundtruthFile.open(groundtruth.c_str());
   	string firstLine;
   	getline(groundtruthFile, firstLine);
 	groundtruthFile.close();
@@ -93,14 +93,14 @@ int main(int argc, char* argv[]){
 	// Read Images
 	ifstream listFramesFile;
 	string listFrames = "images.txt";
-	listFramesFile.open(listFrames);
+	listFramesFile.open(listFrames.c_str());
 	string frameName;
 
 
 	// Write Results
 	ofstream resultsFile;
 	string resultsPath = "output.txt";
-	resultsFile.open(resultsPath);
+	resultsFile.open(resultsPath.c_str());
 
 	// Frame counter
 	int nFrames = 0;
