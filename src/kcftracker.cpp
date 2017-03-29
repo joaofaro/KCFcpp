@@ -396,10 +396,10 @@ void KCFTracker::getHogFeatures(const cv::Mat& z, cv::Mat& featureMap){
     normalizeAndTruncate(map,0.2f);
     PCAFeatureMaps(map);
     _size_patch[0] = map->sizeY;
-    _size_patch[1] = map->sizeX;
+    _size_patch[1] = (map->sizeX?:2);
     _size_patch[2] = map->numFeatures;
 
-    featureMap = cv::Mat(cv::Size(map->numFeatures,map->sizeX*map->sizeY), CV_32F, map->map);  // Procedure do deal with cv::Mat multichannel bug
+    featureMap = cv::Mat(cv::Size(map->numFeatures,(map->sizeX?:2)*map->sizeY), CV_32F, map->map);  // Procedure do deal with cv::Mat multichannel bug
     featureMap = featureMap.t();
     freeFeatureMapObject(&map);
 }
