@@ -177,7 +177,7 @@ cv::Mat complexDivision(cv::Mat a, cv::Mat b)
     std::vector<cv::Mat> pres;
 
     pres.push_back((pa[0].mul(pb[0]) + pa[1].mul(pb[1])).mul(divisor));
-    pres.push_back((pa[1].mul(pb[0]) + pa[0].mul(pb[1])).mul(divisor));
+    pres.push_back((pa[1].mul(pb[0]) - pa[0].mul(pb[1])).mul(divisor));
 
     cv::Mat res;
     cv::merge(pres, res);
