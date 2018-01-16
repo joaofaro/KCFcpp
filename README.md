@@ -24,10 +24,15 @@ Description: KCF on HOG and Lab features, ported to C++ OpenCV. The Lab features
 The CSK tracker [2] is also implemented as a bonus, simply by using raw grayscale as features (the filter becomes single-channel).   
 
 ### Compilation instructions ###
-There are no external dependencies other than OpenCV 3.0.0. Tested on a freshly installed Ubuntu 14.04.   
 
-1) cmake CMakeLists.txt   
-2) make   
+There are no external dependencies other than [OpenCV](https://opencv.org/) 3.0.0. Tested on a freshly installed Ubuntu 14.04. It is recommended to do an *out-of-source* build, as in:
+
+```shh
+KCFcpp$ mkdir build
+KCFcpp$ cd build
+KCFcpp/build$ cmake ..
+KCFcpp/build$ cmake --build .
+```
 
 ### Running instructions ###
 
@@ -45,7 +50,7 @@ fixed_window - Keep the window size fixed when in single-scale mode (multi-scale
 show - Show the results in a window.   
 
 To include it in your project, without the VOT toolkit you just need to:
-	
+
 	// Create the KCFTracker object with one of the available options
 	KCFTracker tracker(HOG, FIXEDWINDOW, MULTISCALE, LAB);
 
