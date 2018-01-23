@@ -110,9 +110,9 @@ int getFeatureMaps(const IplImage* image, const int k, CvLSVMFeatureMapCaskade *
     numChannels = image->nChannels;
 
     dx    = cvCreateImage(cvSize(image->width, image->height), 
-                          IPL_DEPTH_32F, 3);
+                          IPL_DEPTH_32F, numChannels);
     dy    = cvCreateImage(cvSize(image->width, image->height), 
-                          IPL_DEPTH_32F, 3);
+                          IPL_DEPTH_32F, numChannels);
 
     sizeX = width  / k;
     sizeY = height / k;
