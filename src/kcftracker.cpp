@@ -338,6 +338,11 @@ cv::Mat KCFTracker::createGaussianPeak(int sizey, int sizex)
     return FFTTools::fftd(res);
 }
 
+static inline int round_2_size(int val, int sz)
+{
+    return (val / sz) * sz + sz;
+}
+
 // Obtain sub-window from image, with replication-padding and extract features
 cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scale_adjust)
 {
@@ -378,8 +383,29 @@ cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scal
 
         if (_hogfeatures) {
             // Round to cell size and also make it even
-            _tmpl_sz.width = ( ( (int)(_tmpl_sz.width / (2 * cell_size)) ) * 2 * cell_size ) + cell_size*2;
-            _tmpl_sz.height = ( ( (int)(_tmpl_sz.height / (2 * cell_size)) ) * 2 * cell_size ) + cell_size*2;
+            int round_size = 2 * cell_size;
+            
+            int round_w = round_2_size(_tmpl_sz.width, round_size);
+            int round_h = round_2_size(_tmpl_sz.height, round_size);
+            
+            //
+            // XXX:
+            //
+            // This is workaround for crash caused by _tmpl_sz.width or _tmpl_sz.height be equal to 2*cell_size.
+            // Later in 'getFeatureMaps(&z_ipl, cell_size, &map)' dimensions of the 'CvLSVMFeatureMapCaskade *map' will be set to
+            // [_tmpl_sz.width / cell_size, _tmpl_sz.height / cell_size] and in 'normalizeAndTruncate(map, 0.2f)'
+            // dimensions of this map will be changed to map.sizeX -= 2 and map.sizeY -= 2, so if,
+            // for example, _tmpl_sz.height == 2*cell_size then final 'map' dimension will be map.sizeY == 0,
+            // that does not make sense and there will be crash in 'createHanningMats' during multiplacation of two matrixes.
+            //
+            if (round_w == round_size || round_h == round_size) {
+                round_size = 4 * cell_size;
+                round_w = round_2_size(_tmpl_sz.width, round_size);
+                round_h = round_2_size(_tmpl_sz.height, round_size);
+            }
+            
+            _tmpl_sz.width = round_w;
+            _tmpl_sz.height = round_h;
         }
         else {  //Make number of pixels even (helps with some logic involving half-dimensions)
             _tmpl_sz.width = (_tmpl_sz.width / 2) * 2;
