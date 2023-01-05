@@ -100,6 +100,10 @@ public:
     // Update position based on the new frame
     virtual cv::Rect update(cv::Mat image);
 
+    // Update position based on the new frame, and return the peak value corresponding
+    // to the application of the Gaussian filter
+    virtual cv::Rect update(cv::Mat image, float& peak_value);
+
     float interp_factor; // linear interpolation factor for adaptation
     float sigma; // gaussian kernel bandwidth
     float lambda; // regularization
