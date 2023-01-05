@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
 project(KCFcpp)
 
 find_package(OpenCV REQUIRED)
@@ -7,13 +7,27 @@ if(NOT WIN32)
 ADD_DEFINITIONS("-std=c++0x -O3")
 endif(NOT WIN32)
 
+# Default to C99
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+
+# Default to C++17
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
 include_directories(
   include
 )
 
 include_directories(src) 
 FILE(GLOB_RECURSE sourcefiles "src/*.cpp")
-add_executable( ${PROJECT_NAME} ${sourcefiles} )
+add_library( ${PROJECT_NAME} SHARED ${sourcefiles} )
 target_link_libraries( ${PROJECT_NAME} ${OpenCV_LIBS})
 
 
@@ -35,6 +49,6 @@ install(TARGETS ${PROJECT_NAME}
 
 
 install(EXPORT ${PROJECT_NAME}_export
-  FILE ${PROJECT_NAME}-config.cmake
+  FILE ${PROJECT_NAME}Config.cmake
   NAMESPACE ${PROJECT_NAME}::
   DESTINATION "lib/cmake/${PROJECT_NAME}")
