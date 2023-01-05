@@ -46,7 +46,7 @@
 //#include "_lsvmc_latentsvm.h"
 //#include "_lsvmc_resizeimg.h"
 
-#include "fhog.hpp"
+#include "KCFcpp/fhog.hpp"
 
 
 #ifdef HAVE_TBB

@@ -81,11 +81,11 @@ the use of this software, even if advised of the possibility of such damage.
  */
 
 #ifndef _KCFTRACKER_HEADERS
-#include "kcftracker.hpp"
-#include "ffttools.hpp"
-#include "recttools.hpp"
-#include "fhog.hpp"
-#include "labdata.hpp"
+#include "KCFcpp/kcftracker.hpp"
+#include "KCFcpp/ffttools.hpp"
+#include "KCFcpp/recttools.hpp"
+#include "KCFcpp/fhog.hpp"
+#include "KCFcpp/labdata.hpp"
 #endif
 
 // Constructor
@@ -455,7 +455,7 @@ cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scal
 
     // HOG features
     if (_hogfeatures) {
-        IplImage z_ipl = z;
+        IplImage z_ipl = cvIplImage(z);
         CvLSVMFeatureMapCaskade *map;
         getFeatureMaps(&z_ipl, cell_size, &map);
         normalizeAndTruncate(map,0.2f);
